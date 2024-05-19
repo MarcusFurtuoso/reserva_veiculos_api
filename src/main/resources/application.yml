@@ -21,8 +21,8 @@ spring:
     driverClassName: org.postgresql.Driver
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://localhost:5432/db_reserva_veiculos
-    username: postgres
-    password: Seeloko153247,
+    username: { username }
+    password: { password }
 
 ### JWT ###
 config:

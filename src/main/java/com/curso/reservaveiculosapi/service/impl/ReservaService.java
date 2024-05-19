@@ -65,12 +65,10 @@ public class ReservaService implements IReservaService {
                 .build();
 
         usuario.getVeiculos().add(newReserva);
-        veiculo.getUsuarios().add(newReserva);
 
         usuarioRepository.save(usuario);
-        VeiculoEntity save = veiculoRepository.save(veiculo);
 
-        var reservaSave = save.getUsuarios().getLast();
+        var reservaSave = usuario.getVeiculos().getLast();
 
         return ReservaResponse.toResponse(reservaSave);
     }

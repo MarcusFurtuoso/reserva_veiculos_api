@@ -1,0 +1,36 @@
+
+spring:
+  application:
+    name: reserva_veiculo_api
+
+  ### Hibernate ###
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  ### Datasource Configuration ###
+  datasource:
+    driverClassName: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/db_reserva_veiculos
+    username: postgres
+    password: Seeloko153247,
+
+### JWT ###
+config:
+  jwt:
+    secret: 8c48eb0d-90e4-495b-8c31-87f7b1ca20ae
+    expiration: 86400000
+
+### Swagger ###
+springdoc:
+  swagger-ui:
+    doc-expansion: none

@@ -50,16 +50,16 @@ public class UsuarioService implements IUsuarioService {
         PerfilEntity perfil = perfilRepository.findByNomeIgnoreCase(request.perfil())
                 .orElseThrow(() -> new ResourceNotFoundException("Perfil não encontrado com nome: " + request.perfil()));
 
-        if(perfil.getUsuarios().stream().anyMatch(usuario -> usuario.getLogin().equals(request.usuarioLogin())))
-            throw new UsuarioAlreadyRegisteredWithPerfilException("Usuário já possui o perfil: " + request.perfil());
+        if(perfil.getUsuarios().stream().anyMatch(usuario -> usuario.getLogin().equals(request.login())))
+            throw new UsuarioAlreadyRegisteredWithPerfilException("Usuário já possui o perfil: " + request.perfil().toUpperCase());
 
-        return usuarioRepository.findUsuarioEntityByLogin(request.usuarioLogin())
+        return usuarioRepository.findUsuarioEntityByLogin(request.login())
                 .map(usuario -> {
                     usuario.getPerfis().add(perfil);
                     usuarioRepository.save(usuario);
                     return UsuarioToPerfilResponse.toResponse(usuario, perfil);
                 })
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o login: " + request.usuarioLogin()));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o login: " + request.login()));
     }
 
     @Override

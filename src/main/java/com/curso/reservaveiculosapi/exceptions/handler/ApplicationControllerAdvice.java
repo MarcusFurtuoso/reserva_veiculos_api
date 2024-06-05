@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -23,7 +26,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class ApplicationControllerAdvice {
 
-    @ExceptionHandler({MethodArgumentNotValidException.class})
+    @ExceptionHandler({ MethodArgumentNotValidException.class })
     public ResponseEntity<ApiErrorResponse> handleArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest request, Locale locale) {
 
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
@@ -44,14 +47,14 @@ public class ApplicationControllerAdvice {
         return ResponseEntity.status(httpStatus).body(apiErrorResponse);
     }
 
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
     protected ResponseEntity<ApiErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex, HttpServletRequest request, Locale locale) {
         var httpStatus = HttpStatus.BAD_REQUEST;
         var apiErrorBody = this.toApiErrorBody(httpStatus, ex, request, locale);
         return ResponseEntity.status(httpStatus).body(apiErrorBody);
     }
 
-    @ExceptionHandler({DataIntegrityViolationException.class})
+    @ExceptionHandler({ DataIntegrityViolationException.class })
     public ResponseEntity<ApiErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex, HttpServletRequest request, Locale locale) {
         HttpStatus httpStatus = this.getStatusOfExceptionClass(ex);
         var apiErrorBody = this.toApiErrorBody(httpStatus, ex, request, locale);
@@ -65,7 +68,14 @@ public class ApplicationControllerAdvice {
         return ResponseEntity.status(httpStatus).body(apiErrorBody);
     }
 
-    @ExceptionHandler({Exception.class})
+    @ExceptionHandler({ BadCredentialsException.class })
+    public ResponseEntity<ApiErrorResponse> handleBadCredentialsException(BadCredentialsException ex, HttpServletRequest request, Locale locale) {
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        var apiErrorBody = this.toApiErrorBody(httpStatus, ex, request, locale);
+        return ResponseEntity.status(httpStatus).body(apiErrorBody);
+    }
+
+    @ExceptionHandler({ Exception.class })
     public ResponseEntity<ApiErrorResponse> handleException(Exception ex, HttpServletRequest request, Locale locale) {
         HttpStatus httpStatus = this.getStatusOfExceptionClass(ex);
         var apiErrorBody = this.toApiErrorBody(httpStatus, ex, request, locale);

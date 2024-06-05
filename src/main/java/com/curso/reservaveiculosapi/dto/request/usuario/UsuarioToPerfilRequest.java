@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record UsuarioToPerfilRequest(
-        @NotNull @NotBlank @Email String usuarioLogin,
+        @NotNull @NotBlank @Email String login,
         @NotNull @NotBlank String perfil
 ) {
 }

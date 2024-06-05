@@ -1,6 +1,8 @@
 package com.curso.reservaveiculosapi.controller;
 
+import com.curso.reservaveiculosapi.dto.request.veiculo.VeiculoFilter;
 import com.curso.reservaveiculosapi.dto.request.veiculo.VeiculoRequest;
+import com.curso.reservaveiculosapi.dto.response.veiculo.VeiculoImagemResponse;
 import com.curso.reservaveiculosapi.dto.response.veiculo.VeiculoResponse;
 import com.curso.reservaveiculosapi.service.impl.VeiculoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +24,7 @@ import java.util.List;
 @RequestMapping("/api/veiculo")
 @RequiredArgsConstructor
 @Tag(name = "Veiculo", description = "Serviços para gerenciar os veículos")
+@CrossOrigin(origins = "http://localhost:4200")
 public class VeiculoController {
 
     private final VeiculoService veiculoService;
@@ -32,6 +38,34 @@ public class VeiculoController {
     @ResponseStatus(HttpStatus.OK)
     public List<VeiculoResponse> listAll() {
         return veiculoService.listAll();
+    }
+
+    @GetMapping("/all-paginated")
+    public Page<VeiculoResponse> listAllPaginated(@ParameterObject Pageable pageable, VeiculoFilter veiculoFilter) {
+        return veiculoService.listAllPaginated(pageable, veiculoFilter);
+    }
+
+    @GetMapping("/carros")
+    @ResponseStatus(HttpStatus.OK)
+    public List<VeiculoResponse> listAllCars() {
+        return veiculoService.listAllCars();
+    }
+
+    @GetMapping("/motos")
+    @ResponseStatus(HttpStatus.OK)
+    public List<VeiculoResponse> listAllMotorcycles() {
+        return veiculoService.listAllMotorcycles();
+    }
+
+    @GetMapping("/caminhoes")
+    public List<VeiculoResponse> listAllTrucks() {
+        return veiculoService.listAllTrucks();
+    }
+
+    @GetMapping("/imagens")
+    @ResponseStatus(HttpStatus.OK)
+    public List<VeiculoImagemResponse> getImagens(@RequestParam Long veiculoId) {
+        return veiculoService.getImagens(veiculoId);
     }
 
     @Operation(summary = "Busca um veículo pelo ID")

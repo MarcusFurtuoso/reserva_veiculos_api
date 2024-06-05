@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -31,6 +32,13 @@ public class VeiculoEntity {
 
     @Column(name = "vei_tx_tipo")
     private String tipo;
+
+    @Column(name = "vei_dc_preco")
+    private BigDecimal preco;
+
+    @Column(name = "vei_tx_descricao")
+    @Length(max = 300)
+    private String descricao;
 
     @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImagemVeiculoEntity> imagens;

@@ -22,8 +22,11 @@ public class VeiculoUsuarioEntity {
     @Column(name = "vus_nr_id")
     private Long id;
 
-    @Column(name = "vus_dt_date")
-    private Date date;
+    @Column(name = "vus_dt_date_inicial")
+    private Date dateInicial;
+
+    @Column(name = "vus_dt_date_final")
+    private Date dateFinal;
 
     @ManyToOne
     @JoinColumn(name = "vei_nr_id", referencedColumnName = "vei_nr_id")

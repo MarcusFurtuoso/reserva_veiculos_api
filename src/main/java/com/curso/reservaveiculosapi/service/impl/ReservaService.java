@@ -2,6 +2,7 @@ package com.curso.reservaveiculosapi.service.impl;
 
 import com.curso.reservaveiculosapi.dto.request.reserva.ReservaRequest;
 import com.curso.reservaveiculosapi.dto.response.reserva.ReservaResponse;
+import com.curso.reservaveiculosapi.dto.response.reserva.ReserveUsuarioListResponse;
 import com.curso.reservaveiculosapi.entity.UsuarioEntity;
 import com.curso.reservaveiculosapi.entity.VeiculoEntity;
 import com.curso.reservaveiculosapi.entity.VeiculoUsuarioEntity;
@@ -15,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -35,13 +34,20 @@ public class ReservaService implements IReservaService {
     }
 
     @Override
-    public List<ReservaResponse> listAllByUsuarioId(Long usuarioId) {
+    public List<ReserveUsuarioListResponse> listAllByUsuarioId(Long usuarioId) {
         if(!usuarioRepository.existsById(usuarioId))
             throw new ResourceNotFoundException("Usuário não encontrado com o id: " + usuarioId);
 
         return veiculoUsarioRepository.findAllByUsuarioId(usuarioId).stream()
-                .map(ReservaResponse::toResponse)
+                .map(ReserveUsuarioListResponse::toResponse)
                 .toList();
+    }
+
+    @Override
+    public ReserveUsuarioListResponse findById(Long id) {
+        return veiculoUsarioRepository.findById(id)
+                .map(ReserveUsuarioListResponse::toResponse)
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva não encontrada com o id: " + id));
     }
 
     @Override
@@ -61,7 +67,8 @@ public class ReservaService implements IReservaService {
         VeiculoUsuarioEntity newReserva = VeiculoUsuarioEntity.builder()
                 .usuario(usuario)
                 .veiculo(veiculo)
-                .date(Date.valueOf(LocalDate.now()))
+                .dateInicial(request.dataInicial())
+                .dateFinal(request.dataFinal())
                 .build();
 
         usuario.getVeiculos().add(newReserva);

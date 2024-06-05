@@ -9,14 +9,16 @@ public record ReservaResponse(
         Long id,
         String usuario,
         Long veiculoId,
-        Date date
+        Date dataInicial,
+        Date dataFinal
 ) implements Serializable {
     public static ReservaResponse toResponse(VeiculoUsuarioEntity veiculoUsuarioEntity) {
         return new ReservaResponse(
                 veiculoUsuarioEntity.getId(),
                 veiculoUsuarioEntity.getUsuario().getLogin(),
                 veiculoUsuarioEntity.getVeiculo().getId(),
-                veiculoUsuarioEntity.getDate()
+                veiculoUsuarioEntity.getDateInicial(),
+                veiculoUsuarioEntity.getDateFinal()
         );
     }
 }

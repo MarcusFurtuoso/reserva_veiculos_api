@@ -2,6 +2,7 @@ package com.curso.reservaveiculosapi.controller;
 
 import com.curso.reservaveiculosapi.dto.request.reserva.ReservaRequest;
 import com.curso.reservaveiculosapi.dto.response.reserva.ReservaResponse;
+import com.curso.reservaveiculosapi.dto.response.reserva.ReserveUsuarioListResponse;
 import com.curso.reservaveiculosapi.service.impl.ReservaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/reserva")
 @RequiredArgsConstructor
 @Tag(name = "Reserva", description = "Serviços para gerenciar as reservas de veículos")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ReservaController {
 
     private final ReservaService reservaService;
@@ -41,8 +43,19 @@ public class ReservaController {
                     schema = @Schema(implementation = ReservaResponse.class)))
     @GetMapping("/usuario")
     @ResponseStatus(HttpStatus.OK)
-    public List<ReservaResponse> listAllByUsuarioId(@RequestParam Long usuarioId) {
+    public List<ReserveUsuarioListResponse> listAllByUsuarioId(@RequestParam Long usuarioId) {
         return reservaService.listAllByUsuarioId(usuarioId);
+    }
+
+    @Operation(summary = "Busca uma reserva pelo id")
+    @ApiResponse(responseCode = "200",
+            description = "Reserva encontrada com sucesso",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ReserveUsuarioListResponse.class)))
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ReserveUsuarioListResponse findById(@PathVariable Long id) {
+        return reservaService.findById(id);
     }
 
     @Operation(summary = "Cadastra uma reserva de veículo")

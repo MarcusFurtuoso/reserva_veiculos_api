@@ -2,8 +2,12 @@ package com.curso.reservaveiculosapi.dto.request.reserva;
 
 import jakarta.validation.constraints.NotNull;
 
-public record ReservaRequest(
+import java.sql.Date;
+
+public record  ReservaRequest(
         @NotNull Long usuarioId,
-        @NotNull Long veiculoId
+        @NotNull Long veiculoId,
+        @NotNull Date dataInicial,
+        @NotNull Date dataFinal
 ) {
 }

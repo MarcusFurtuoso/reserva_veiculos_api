@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/imagem-veiculo")
 @RequiredArgsConstructor
 @Tag(name = "Imagem do Veículo", description = "Serviços para gerenciar as imagens dos veículos")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ImagemVeiculoController {
 
     private final ImagemVeiculoService imagemVeiculoService;

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record ImagemUpdateRequest (
         Long imagemId,
         @NotNull @NotBlank String nome,
-        @NotNull byte[] bytes,
+        @NotNull String bytes,
         @NotNull @NotBlank String extensao
 ) {
 }

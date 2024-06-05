@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -35,15 +36,13 @@ public class ImagemVeiculoService implements IImagemVeiculoService {
             throw new ImagemVeiculoIsFullException("Veículo atingiu o máximo de imagens cadastradas");
         }
 
-        if (veiculo.getImagens().stream().anyMatch(imagem -> Arrays.equals(imagem.getBytes(), request.bytes()))) {
-            throw new ImagemAlreadyRegisteredException("Imagem já cadastrada para esse veículo");
-        }
+        byte[] decodedBytes = Base64.getDecoder().decode(request.bytes());
 
         ImagemVeiculoEntity newImagem = ImagemVeiculoEntity.builder()
                 .nome(request.nome())
                 .extensao(request.extensao())
                 .veiculo(veiculo)
-                .bytes(request.bytes())
+                .bytes(decodedBytes)
                 .build();
 
         veiculo.getImagens().add(newImagem);
@@ -78,7 +77,7 @@ public class ImagemVeiculoService implements IImagemVeiculoService {
 
         imagemToUpdate.setNome(request.nome());
         imagemToUpdate.setExtensao(request.extensao());
-        imagemToUpdate.setBytes(request.bytes());
+//        imagemToUpdate.setBytes(request.bytes());
 
         veiculoRepository.save(veiculo);
 
@@ -87,23 +86,24 @@ public class ImagemVeiculoService implements IImagemVeiculoService {
 
     private ImagemVeiculoEntity addNewImage(VeiculoEntity veiculo, ImagemUpdateRequest request) {
 
-        if (veiculo.getImagens().stream().anyMatch(imagem -> Arrays.equals(imagem.getBytes(), request.bytes()))) {
-            throw new ImagemAlreadyRegisteredException("Imagem já cadastrada para esse veículo");
-        }
-
         if (veiculo.getImagens().size() >= 6) {
             throw new ImagemVeiculoIsFullException("Veículo atingiu o máximo de imagens cadastradas");
+        }
+
+        byte[] decodedBytes = Base64.getDecoder().decode(request.bytes());
+
+        if (veiculo.getImagens().stream().anyMatch(imagem -> Arrays.equals(imagem.getBytes(), decodedBytes))) {
+            throw new ImagemAlreadyRegisteredException("Imagem já cadastrada para esse veículo");
         }
 
         ImagemVeiculoEntity newImagem = ImagemVeiculoEntity.builder()
                 .nome(request.nome())
                 .extensao(request.extensao())
                 .veiculo(veiculo)
-                .bytes(request.bytes())
+                .bytes(decodedBytes)
                 .build();
 
         veiculo.getImagens().add(newImagem);
-
         var veiculoSave = veiculoRepository.save(veiculo);
 
         var imagemSaved = veiculoSave.getImagens().getLast();

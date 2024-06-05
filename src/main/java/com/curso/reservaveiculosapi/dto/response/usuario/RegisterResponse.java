@@ -3,17 +3,14 @@ package com.curso.reservaveiculosapi.dto.response.usuario;
 import com.curso.reservaveiculosapi.entity.UsuarioEntity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public record RegisterResponse(
-        Long id,
-        String nome,
-        String login
+        UsuarioResponse usuario
 ) implements Serializable {
     public static RegisterResponse toResponse(UsuarioEntity usuarioEntity) {
         return new RegisterResponse(
-                usuarioEntity.getId(),
-                usuarioEntity.getNome(),
-                usuarioEntity.getLogin()
+                UsuarioResponse.toResponse(usuarioEntity)
         );
     }
 

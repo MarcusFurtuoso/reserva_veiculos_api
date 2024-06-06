@@ -11,6 +11,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +50,19 @@ public class ReservaController {
         return reservaService.listAllByUsuarioId(usuarioId);
     }
 
-    @Operation(summary = "Busca uma reserva pelo id")
+    @Operation(summary = "Lista todos as reservas de um usuário páginado")
     @ApiResponse(responseCode = "200",
+            description = "Reservas do usuário listadas com sucesso",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ReservaResponse.class)))
+    @GetMapping("/usuario-paginated")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ReserveUsuarioListResponse> listAllByUsuarioId(@ParameterObject Pageable pageable, Long usuarioId) {
+        return reservaService.listAllByUsuarioId(pageable, usuarioId);
+    }
+
+    @Operation(summary = "Busca uma reserva pelo id")
+    @ApiResponse(responseCode = "200x",
             description = "Reserva encontrada com sucesso",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ReserveUsuarioListResponse.class)))

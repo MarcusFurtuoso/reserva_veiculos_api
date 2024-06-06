@@ -36,6 +36,17 @@ public class PerfilController {
         return perfilService.listAll();
     }
 
+    @Operation(summary = "Lista todos os perfis paginados")
+    @ApiResponse(responseCode = "200",
+            description = "Perfis listados com sucesso",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = PerfilResponse.class)))
+    @GetMapping("/all-paginated")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PerfilResponse> listAllPaginated() {
+        return perfilService.listAll();
+    }
+
     @Operation(summary = "Lista todos os usuários associados ao perfil especificado pelo nome")
     @ApiResponse(responseCode = "200",
             description = "Uusários listados com sucesso",

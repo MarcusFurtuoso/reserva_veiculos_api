@@ -10,6 +10,8 @@ import com.curso.reservaveiculosapi.exceptions.custom.ResourceNotFoundException;
 import com.curso.reservaveiculosapi.repository.PerfilRepository;
 import com.curso.reservaveiculosapi.service.IPerfilService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,11 @@ public class PerfilService implements IPerfilService {
     @Override
     public List<PerfilResponse> listAll() {
         return perfilRepository.findAll().stream().map(PerfilResponse::toResponse).toList();
+    }
+
+    @Override
+    public Page<PerfilResponse> listAllPageable(Pageable pageable) {
+        return perfilRepository.findAll(pageable).map(PerfilResponse::toResponse);
     }
 
     @Override

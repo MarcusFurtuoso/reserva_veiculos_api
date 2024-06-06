@@ -13,6 +13,8 @@ import com.curso.reservaveiculosapi.repository.VeiculoRepository;
 import com.curso.reservaveiculosapi.repository.VeiculoUsarioRepository;
 import com.curso.reservaveiculosapi.service.IReservaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,12 @@ public class ReservaService implements IReservaService {
         return veiculoUsarioRepository.findAllByUsuarioId(usuarioId).stream()
                 .map(ReserveUsuarioListResponse::toResponse)
                 .toList();
+    }
+
+    @Override
+    public Page<ReserveUsuarioListResponse> listAllByUsuarioId(Pageable pageable, Long usuarioId) {
+        return veiculoUsarioRepository.findAllByUsuarioId(pageable, usuarioId)
+                .map(ReserveUsuarioListResponse::toResponse);
     }
 
     @Override

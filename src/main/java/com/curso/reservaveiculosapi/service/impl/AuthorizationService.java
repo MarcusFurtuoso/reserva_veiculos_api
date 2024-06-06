@@ -20,8 +20,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,8 +29,6 @@ public class AuthorizationService implements IAuthorizationService {
     private final ApplicationContext context;
 
     private final UsuarioRepository usuarioRepository;
-
-    private final PerfilRepository perfilRepository;
 
     private final TokenService tokenService;
 
@@ -50,8 +46,6 @@ public class AuthorizationService implements IAuthorizationService {
     @Override
     public LoginResponse login(AuthenticationRequest request) {
         authenticationManager = context.getBean(AuthenticationManager.class);
-
-        var perfis = perfilRepository.findAll();
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(request.login(), request.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);

@@ -16,4 +16,10 @@ public interface VeiculoRepository extends JpaRepository<VeiculoEntity, Long> {
             where (:#{#veiculoFilter == null || #veiculoFilter.tipo() == null} or UPPER(vei_tx_tipo) = UPPER(:#{#veiculoFilter.tipo()}))
             """)
     Page<VeiculoEntity> findVehiclesByType(Pageable pageable, VeiculoFilter veiculoFilter);
+
+    @Query(nativeQuery = true, value = """
+            SELECT * FROM vei_veiculo v WHERE LOWER(v.vei_tx_nome) LIKE LOWER(CONCAT('%', :#{#veiculoFilter.nome()}, '%'))
+            """)
+    Page<VeiculoEntity> findAllSearch(Pageable pageable, VeiculoFilter veiculoFilter);
+
 }

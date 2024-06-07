@@ -33,6 +33,11 @@ public class VeiculoService implements IVeiculoService {
         return veiculoRepository.findVehiclesByType(pageable, veiculoFilter).map(VeiculoResponse::toResponse);
     }
 
+    @Override
+    public Page<VeiculoResponse> listAllBySearchPaginated(Pageable pageable, VeiculoFilter veiculoFilter) {
+        return veiculoRepository.findAllSearch(pageable, veiculoFilter).map(VeiculoResponse::toResponse);
+    }
+
 
     @Override
     public List<VeiculoResponse> listAllCars() {

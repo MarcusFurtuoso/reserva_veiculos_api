@@ -40,9 +40,26 @@ public class VeiculoController {
         return veiculoService.listAll();
     }
 
+    @Operation(summary = "Lista todos os veículos paginados com filtro (opcional)")
+    @ApiResponse(responseCode = "200",
+            description = "Veículos listados com sucesso",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = VeiculoResponse.class)))
     @GetMapping("/all-paginated")
+    @ResponseStatus(HttpStatus.OK)
     public Page<VeiculoResponse> listAllPaginated(@ParameterObject Pageable pageable, VeiculoFilter veiculoFilter) {
         return veiculoService.listAllPaginated(pageable, veiculoFilter);
+    }
+
+    @Operation(summary = "Lista todos os veículos paginados com filtro de busca (opcional)")
+    @ApiResponse(responseCode = "200",
+            description = "Veículos listados com sucesso",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = VeiculoResponse.class)))
+    @GetMapping("/all-search")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<VeiculoResponse> listAllBySearchPaginated(@ParameterObject Pageable pageable, VeiculoFilter veiculoFilter) {
+        return veiculoService.listAllBySearchPaginated(pageable, veiculoFilter);
     }
 
     @GetMapping("/carros")

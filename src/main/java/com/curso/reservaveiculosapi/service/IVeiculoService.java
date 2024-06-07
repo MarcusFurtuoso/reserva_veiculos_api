@@ -15,6 +15,8 @@ public interface IVeiculoService {
 
     Page<VeiculoResponse> listAllPaginated(Pageable pageable, VeiculoFilter veiculoFilter);
 
+    Page<VeiculoResponse> listAllBySearchPaginated(Pageable pageable, VeiculoFilter veiculoFilter);
+
     List<VeiculoResponse> listAllCars();
 
     List<VeiculoResponse> listAllMotorcycles();

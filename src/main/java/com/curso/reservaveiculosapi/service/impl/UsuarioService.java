@@ -2,6 +2,7 @@ package com.curso.reservaveiculosapi.service.impl;
 
 import com.curso.reservaveiculosapi.dto.request.usuario.UsuarioToPerfilRequest;
 import com.curso.reservaveiculosapi.dto.request.usuario.RegisterRequest;
+import com.curso.reservaveiculosapi.dto.request.usuario.UsuarioUpdateRequest;
 import com.curso.reservaveiculosapi.dto.response.usuario.UsuarioToPerfilResponse;
 import com.curso.reservaveiculosapi.dto.response.usuario.UsuarioResponse;
 import com.curso.reservaveiculosapi.dto.response.veiculo.VeiculoResponse;
@@ -63,17 +64,14 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public UsuarioResponse update(Long usuarioId, RegisterRequest request) {
+    public UsuarioResponse update(Long usuarioId, UsuarioUpdateRequest request) {
         UsuarioEntity usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o id: " + usuarioId));
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(request.senha());
-
         usuario.setNome(request.nome());
-        usuario.setLogin(request.login());
-        usuario.setSenha(encryptedPassword);
 
         UsuarioEntity usuarioSave = usuarioRepository.save(usuario);
+
         return UsuarioResponse.toResponse(usuarioSave);
     }
 

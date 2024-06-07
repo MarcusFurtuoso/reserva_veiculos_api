@@ -2,6 +2,7 @@ package com.curso.reservaveiculosapi.controller;
 
 import com.curso.reservaveiculosapi.dto.request.usuario.UsuarioToPerfilRequest;
 import com.curso.reservaveiculosapi.dto.request.usuario.RegisterRequest;
+import com.curso.reservaveiculosapi.dto.request.usuario.UsuarioUpdateRequest;
 import com.curso.reservaveiculosapi.dto.response.usuario.UsuarioToPerfilResponse;
 import com.curso.reservaveiculosapi.dto.response.usuario.UsuarioResponse;
 import com.curso.reservaveiculosapi.dto.response.veiculo.VeiculoResponse;
@@ -67,7 +68,7 @@ public class UsuarioController {
                     schema = @Schema(implementation = UsuarioResponse.class)))
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.OK)
-    public UsuarioResponse update(@PathVariable Long usuarioId, @RequestBody @Valid RegisterRequest request) {
+    public UsuarioResponse update(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioUpdateRequest request) {
         return usuarioService.update(usuarioId, request);
     }
 

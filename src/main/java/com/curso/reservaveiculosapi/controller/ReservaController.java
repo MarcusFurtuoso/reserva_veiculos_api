@@ -54,7 +54,7 @@ public class ReservaController {
     @ApiResponse(responseCode = "200",
             description = "Reservas do usuário listadas com sucesso",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ReservaResponse.class)))
+                    schema = @Schema(implementation = ReserveUsuarioListResponse.class)))
     @GetMapping("/usuario-paginated")
     @ResponseStatus(HttpStatus.OK)
     public Page<ReserveUsuarioListResponse> listAllByUsuarioId(@ParameterObject Pageable pageable, Long usuarioId) {
